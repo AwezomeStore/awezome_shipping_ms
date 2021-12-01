@@ -1,0 +1,86 @@
+1. npm init -y
+
+2. npm install -D nodemon ts-node typescript @types/express @types/node
+
+3. npm install -S express
+
+4. Luego concatenamos los siguientes scripts npm para package.json
+
+...
+  "scripts": {
+    "build": "tsc",
+    "start": "nodemon src/index.ts"
+  },
+...
+
+5.TypeScript necesita un archivo json con configuraciones básicas para compilar, puede ver ejemplos aquí
+
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "build"
+  }
+}
+
+6. Archivo nondemon
+
+{
+  "verbose": true,
+  "ignore": ["src/**/*.spec.ts"],
+  "watch": ["src/**/*.ts"],
+  "execMap": {
+    "ts": "node --inspect=0.0.0.0:9229 --nolazy -r ts-node/register"
+  }
+}
+
+7. Crear una carpeta SRC y en ella crear un archivo index.ts
+
+import * as express from "express";
+import { exampleRouter } from "./routes/example.router";
+
+const PORT = 8080;
+
+let app = express();
+
+app.use(exampleRouter);
+
+app.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
+
+Preparación del entorno de desarrollo con docker-compose
+
+1. Ahora construiremos nuestro entorno de desarrollo, haremos lo siguiente Dockerfile.dev:
+
+FROM node:10.15.3-alpine
+
+WORKDIR /home/node/app
+ADD package*.json ./
+
+RUN npm i
+
+USER node
+
+2. Y usaremos uno docker-composeasí:
+
+version: "3.7"
+
+services:
+  web-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: example-web-server
+    volumes:
+      - ./src:/home/node/app/src
+      - ./nodemon.json:/home/node/app/nodemon.json
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+      - "9229:9229"
+    command: npm start
+
+3.docker-compose up -d
