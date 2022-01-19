@@ -7,7 +7,7 @@ router.route('/')
     .get(getCountries)
     .post(createCountry);
 
-router.route('/:contryId')
+router.route('/:contry_id')
     .get(getCountry)
     .delete(deleteCountry)
     .put(updateCountry);

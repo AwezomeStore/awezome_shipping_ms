@@ -7,7 +7,7 @@ export async function connect(): Promise<Pool> {
         host: 'shipping_db',
         user: 'root',
         password: '123456',
-        database: 'awezomestore_shipping_db',
+        database: 'shipping_db',
         connectionLimit: 10
     });
     return connection;

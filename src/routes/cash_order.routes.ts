@@ -7,7 +7,7 @@ router.route('/')
     .get(getCities)
     .post(createCity);
 
-router.route('/:cityId')
+router.route('/:order_id')
     .get(getCity)
     .delete(deleteCity)
     .put(updateCity);
