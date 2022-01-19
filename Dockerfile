@@ -12,5 +12,5 @@ RUN npm i @types/morgan
 RUN npm i mysql2
 RUN npm i types/mysql2
 
-EXPOSE 5000
+EXPOSE 7000
 CMD [ "npm", "run", "dev" ]

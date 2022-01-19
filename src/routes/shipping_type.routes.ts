@@ -7,12 +7,12 @@ router.route('/')
     .get(getShipping_Types)
     .post(createShipping_Type);
 
-router.route('/:shipping_type_id')
+router.route('/:shipping_type_Id')
     .get(getShipping_Type)
     .delete(deleteShipping_Type)
     .put(updateShipping_Type);
 
-router.route('/:city_id')
+router.route('/:city_Id')
     .get(getShipping_TypeByCity)
 
 router.route('/:shipping_type_name')

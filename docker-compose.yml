@@ -2,17 +2,17 @@ version: '3'
 
 services:
 
-  mysqldb:
+  shipping_db:
     image: mysql:5.7
     build:
       context: .
       dockerfile: ./docker/Dockerfile-mysql
-    container_name: mysqldb
+    container_name: shipping_db
     environment:
       # ALLOW_EMPTY_PASSWORD is recommended only for development.
       - MYSQL_ROOT_PASSWORD=123456
-      - MYSQL_DATABASE=shipping_db
-      - MYSQL_USER=shipping
+      - MYSQL_DATABASE=awezomestore_shipping_db
+      - MYSQL_USER=awezomestore
       - MYSQL_PASSWORD=123456
     ports:
      - "3306:3306"
@@ -22,9 +22,9 @@ services:
       - my-db:/var/lib/mysql
       - ./mysql:/docker-entrypoint-initdb.d/:rw
 
-  app:
+  shipping_ms:
     build: .
-    container_name: app
+    container_name: shipping_ms
     volumes:
       - ".:/app"
     ports:
@@ -32,6 +32,7 @@ services:
     environment:
       - PORT=5000
     depends_on:
-      - mysqldb
+      - shipping_db
+
 volumes:
   my-db:

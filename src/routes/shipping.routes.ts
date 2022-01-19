@@ -7,7 +7,7 @@ router.route('/')
     .get(getShippings)
     .post(createShipping);
 
-router.route('/:shipping_id')
+router.route('/:shippingId')
     .get(getShipping)
     .delete(deleteShipping)
     .put(updateShipping);

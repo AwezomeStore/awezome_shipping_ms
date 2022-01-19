@@ -7,7 +7,7 @@ router.route('/')
     .get(getLocations)
     .post(createLocation);
 
-router.route('/:location_id')
+router.route('/:locationId')
     .get(getLocation)
     .delete(deleteLocation)
     .put(updateLocation);
