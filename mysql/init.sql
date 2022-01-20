@@ -1,19 +1,15 @@
 /*==============================================================*/
-/* Table: cash_order                                            */
+/* Table: country                                               */
 /*==============================================================*/
-create table cash_order
+create table country
 (
-   order_id             varchar(50) not null,
-   user_id              int not null,
-   shopping_car         int not null,
-   order_date           timestamp not null,
-   shipping_type_id     int not null,
-   payment_method_id    int not null,
-   order_address        varchar(150) not null,
-   zip_code             int not null,
-   order_status         boolean not null,
-   primary key (order_id)
+   country_id           int not null,
+   country_name         varchar(150) not null,
+   region               varchar(150) not null,
+   country_status       boolean not null,
+   primary key (country_id)
 );
+
 
 /*==============================================================*/
 /* Table: city                                                  */
@@ -28,6 +24,32 @@ create table city
 );
 
 /*==============================================================*/
+/* Table: location                                              */
+/*==============================================================*/
+create table location
+(
+   location_id          int not null,
+   city_id              int not null,
+   location_name        varchar(150) not null,
+   location_status      boolean not null,
+   primary key (location_id)
+);
+
+/*==============================================================*/
+/* Table: shipping_type                                         */
+/*==============================================================*/
+create table shipping_type
+(
+   shipping_type_id     int not null,
+   city_id              int not null,
+   shipping_type_name   varchar(150) not null,
+   delivery_time        int not null,
+   cost                 double not null,
+   status_shipping_type boolean not null,
+   primary key (shipping_type_id)
+);
+
+/*==============================================================*/
 /* Table: city_shipping_type                                    */
 /*==============================================================*/
 create table city_shipping_type
@@ -38,27 +60,20 @@ create table city_shipping_type
 );
 
 /*==============================================================*/
-/* Table: country                                               */
+/* Table: cash_order                                            */
 /*==============================================================*/
-create table country
+create table cash_order
 (
-   country_id           int not null,
-   country_name         varchar(150) not null,
-   region               varchar(150) not null,
-   country_status       boolean not null,
-   primary key (country_id)
-);
-
-/*==============================================================*/
-/* Table: location                                              */
-/*==============================================================*/
-create table location
-(
-   location_id          int not null,
-   city_id              int not null,
-   location_name        varchar(150) not null,
-   location_status      boolean not null,
-   primary key (location_id)
+   order_id             varchar(50) not null,
+   user_id              int not null,
+   shopping_car         int not null,
+   order_date           timestamp not null,
+   shipping_type_id     int not null,
+   payment_method_id    int not null,
+   order_address        varchar(150) not null,
+   zip_code             int not null,
+   order_status         boolean not null,
+   primary key (order_id)
 );
 
 /*==============================================================*/
@@ -77,25 +92,11 @@ create table shipping
    primary key (shipping_id)
 );
 
-/*==============================================================*/
-/* Table: shipping_type                                         */
-/*==============================================================*/
-create table shipping_type
-(
-   shipping_type_id     int not null,
-   city_id              int not null,
-   shipping_type_name   varchar(150) not null,
-   delivery_time        int not null,
-   cost                 double not null,
-   status_shipping_type boolean not null,
-   primary key (shipping_type_id)
-);
-
-alter table cash_order add constraint fk_reference_5 foreign key (shipping_type_id)
-      references shipping_type (shipping_type_id) on delete restrict on update restrict;
-
 alter table city add constraint fk_reference_1 foreign key (country_id)
       references country (country_id) on delete restrict on update restrict;
+
+alter table location add constraint fk_reference_4 foreign key (city_id)
+      references city (city_id) on delete restrict on update restrict;
 
 alter table city_shipping_type add constraint fk_reference_2 foreign key (city_id)
       references city (city_id) on delete restrict on update restrict;
@@ -103,8 +104,8 @@ alter table city_shipping_type add constraint fk_reference_2 foreign key (city_i
 alter table city_shipping_type add constraint fk_reference_3 foreign key (shipping_type_id)
       references shipping_type (shipping_type_id) on delete restrict on update restrict;
 
-alter table location add constraint fk_reference_4 foreign key (city_id)
-      references city (city_id) on delete restrict on update restrict;
+alter table cash_order add constraint fk_reference_5 foreign key (shipping_type_id)
+      references shipping_type (shipping_type_id) on delete restrict on update restrict;
 
 alter table shipping add constraint fk_reference_6 foreign key (order_id)
       references cash_order (order_id) on delete restrict on update restrict;
